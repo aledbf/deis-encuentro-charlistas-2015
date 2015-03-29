@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+		<title>deis.io</title>
+		<meta name="description" content="deis.io - PAAS Open Source">
+		<meta name="author" content="Manuel Alejandro de Brito Fontes">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+
+		<div class="reveal">
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+      		<img src="img/DeisLogo.png" class="stretch" style="border:none;background:white;box-shadow:0 0 0"/>
+					<br/>
+					<p>Alejandro de Brito Fontes</p>
+					<p>github.com/aledbf</p>
+					<br/>
+					<p>alejandro.debrito@soficom.cl</p>
+				</section>
+
+				<section>
+					<h1>¿Qué es Deis?</h1>
+					<br/>
+					<ul>
+						<li>Plataforma de Aplicaciones (PaaS)</li>
+						<li>un Heroku privado</li>
+						<li>Go, Python &amp; Shell</li>
+						<li>100% open source</li>
+					</ul>
+				</section>
+
+				<section>
+					<img src="img/DeisLogo.png" class="stretched" style="border:none;background:none;box-shadow:0 0 0"/>
+					<br/>
+					<ul>
+						<li>~4,000 stars, ~230 watchers, ~590 forks</li>
+						<li>300+ clusters</li>
+						<li>2000+ nodes</li>
+						<li>5 desarrolladores tiempo completo, +100 contribuidores</li>
+					</ul>
+				</section>
+
+				<section>
+				  <h1>Workflows de trabajo</h1>
+				</section>
+
+				<section>
+					<img src="img/deis-cli.png" class="zoom" style="border:none;background:none;box-shadow:0 0 0;width:50%;height:50%"/>
+				</section>
+
+				<section>
+					<div>
+					  <h4><b>git push</b> (Heroku buildpacks)</h4>
+					  <h4><b>dockerfile</b> (docker build)</h4>
+					  <h4><b>docker pull</b> (deis pull)</h4>
+				  <div>
+				</section>
+
+				<section>
+					<p align="left">Heroku buildpacks:</p>
+					<small>
+					<ul>
+						<li>ruby
+						<li>node.js / io.js
+						<li>java
+						<li>gradle
+						<li>grails
+						<li>play
+						<li>python
+						<li>php
+						<li>clojure
+						<li>scala
+						<li>go
+						<li>heroku-buildpack-multi
+						<li>BUILDPACK_URL
+					</ul>
+					</small>
+				</section>
+
+				<section>
+				  <p align="left">Ejemplo utilizando Heroku buildpacks:</p>
+<pre><code>demo-nodejs-express
+├── package.json
+├── Procfile
+└── server.js
+</code></pre>
+
+<pre><code>web: node server.js</code></pre>
+
+<pre><code class="javascript">var express = require('express');
+var app = express();
+
+app.get('/', function(req, res){
+  var mensaje = process.env.POWERED_BY || 'Deis';
+  res.send('Powered by ' + mensaje);
+});
+
+var port = process.env.PORT || 5000;
+server = app.listen(port);
+
+console.log('Escuchando en puerto %d', server.address().port);
+</code></pre>
+				</section>
+
+				<section>
+					<div>
+						<small><a href="https://asciinema.org/a/18040">video 1</a></small>
+						<script type="text/javascript" src="https://asciinema.org/a/18040.js" id="asciicast-18040" async></script>
+					</div>
+				</section>
+
+				<section>
+				  <h4>Eso lo puedo hacer con cualquier PAAS</h4>
+				</section>
+
+				<section>
+					<div>
+						<small><a href="https://asciinema.org/a/18070">video 2</a></small>
+						<script type="text/javascript" src="https://asciinema.org/a/18070.js" id="asciicast-18070" async></script>
+					</div>
+				</section>
+
+				<section>
+				  <p align="left">Docker build:
+<pre><code class="bash">cat Dockerfile</code></pre>
+<pre><code class="bash">FROM ubuntu-debootstrap:14.04
+RUN apt-get update && \
+  apt-get install -y netcat-openbsd && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ENV POWERED_BY Deis
+CMD while true; do echo "HTTP/1.1 200 OK\n\nPowered by $POWERED_BY" | nc -l -p 1500; done
+EXPOSE 1500
+</code></pre>
+				</section>
+
+				<section>
+					<div>
+						<small><a href="https://asciinema.org/a/18073">video 3</a></small>
+						<script type="text/javascript" src="https://asciinema.org/a/18073.js" id="asciicast-18073" async></script>
+					<div>
+				</section>
+
+				<section>
+				  <p align="left">deis pull (docker pull):</p>
+				  <p align="center"><small>https://index.docker.io</small></p>
+				  <img src="img/deis-pull.png" class="stretched" style="border:none;background:none;box-shadow:0 0 0"/>
+				</section>
+
+				<section>
+					<div>
+						<small><a href="https://asciinema.org/a/18074">video 4</a></small>
+						<script type="text/javascript" src="https://asciinema.org/a/18074.js" id="asciicast-18074" async></script>
+					<div>
+				</section>
+
+				<section>
+					<p>
+						A diferencia de otros PaaS como Heroku o AppEngine <br/>
+						deis esta pensado para correr en equipos sobre los que se tiene <b>control</b>
+					</p>
+				</section>
+
+				<section>
+					<h4>¿Qué significa "correr en equipos sobre los que se tiene control"?</h4>
+				</section>
+
+				<section>
+					<img src="img/donde-instalar.png" class="stretch" style="border:none;background:none;box-shadow:0 0 0"/>
+				</section>
+
+				<section>
+					<h1>¿Como funciona?</h1>
+				</section>
+
+				<section>
+					<img src="img/foundation.png" class="stretch" style="border:none;background:none;box-shadow:0 0 0"/>
+				</section>
+
+				<section>
+					<img src="img/coreos-features.png" class="stretch" style="border:none;background:none;box-shadow:0 0 0"/>
+				</section>
+
+				<section>
+					<div>
+            <img src="img/monitoreo-datadog.png" class="stretch" style="border:none;background:white;box-shadow:0 0 0"/>
+					</div>
+				</section>
+
+				<section>
+					<h1>Fin</h1>
+				</section>
+
+				<section>
+					<h1>Preguntas</h1>
+				</section>
+
+				<section>
+					<h2>Links</h2>
+					<ul>
+						<li><a href="http://webchat.freenode.net/?channels=deis">#deis</a></li>
+						<li><a href="https://github.com/deis/deis">GitHub</a></li>
+						<li><a href="http://deis.io/overview/">Introducción a deis</a></li>
+						<li><a href="http://docs.deis.io/">Documentación</a></li>
+					</ul>
+				</section>
+
+			</div>
+		</div>
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+		<script>
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
